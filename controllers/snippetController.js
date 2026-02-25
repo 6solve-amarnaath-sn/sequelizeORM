@@ -128,7 +128,7 @@ exports.updateSnippet = async (req, res) => {
   if (!snippet)
     return res.status(404).json({ message: "Not found" });
 
-  if (snippet.userId !== req.user.id && req.user.role==="admin")
+  if (snippet.userId !== req.user.id && req.user.role!=="admin")
     return res.status(403).json({ message: "Forbidden" });
 
   const { title, description, code, language, visibility, tags } = req.body;

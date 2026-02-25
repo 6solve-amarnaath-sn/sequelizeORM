@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Snippet.belongsTo(models.User, {
         foreignKey: 'userId',
-        as: 'author'
+        as: 'author',
+        onDelete: 'CASCADE'
       });
 
 

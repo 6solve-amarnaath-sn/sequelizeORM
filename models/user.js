@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Snippet, {
         foreignKey: 'userId',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       });
 
     }
