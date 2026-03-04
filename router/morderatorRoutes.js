@@ -17,6 +17,6 @@ moderatorRouter.get("/snippets", getAllPublicSnippets);
 
 moderatorRouter.delete("/snippets/:id", deleteSnippet);
 
-moderatorRouter.put("/snippets/:id/togglesvisibility", togglesvisibility);
+moderatorRouter.put("/snippets/:id/toggles-visibility", togglesvisibility);
 
 module.exports = moderatorRouter;

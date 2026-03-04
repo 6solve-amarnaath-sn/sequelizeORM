@@ -17,8 +17,8 @@ adminRouter.get("/users", getAllUsers);
 
 adminRouter.delete("/users/:id", deleteUser);
 
-adminRouter.put("/users/:id/promote", promoteTOModerator);
+adminRouter.put("/users/promote/:id", promoteTOModerator);
 
-adminRouter.put("/users/:id/demote", demoteToUser);
+adminRouter.put("/users/demote/:id", demoteToUser);
 
 module.exports = adminRouter;
