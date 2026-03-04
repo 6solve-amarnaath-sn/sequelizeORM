@@ -5,7 +5,7 @@ const authorize = require("../middleware/authorize");
 const {
   getAllPublicSnippets,
   deleteSnippet,
-  hideSnippet,
+  togglesvisibility,
 } = require("../controllers/moderatorController");
 
 const moderatorRouter = Router();
@@ -17,6 +17,6 @@ moderatorRouter.get("/snippets", getAllPublicSnippets);
 
 moderatorRouter.delete("/snippets/:id", deleteSnippet);
 
-moderatorRouter.put("/snippets/:id/hide", hideSnippet);
+moderatorRouter.put("/snippets/:id/togglesvisibility", togglesvisibility);
 
 module.exports = moderatorRouter;

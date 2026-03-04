@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { getPublicSnippets, getMySnippets, createSnippet, updateSnippet, deleteSnippet, getSnippetById } = require("../controllers/snippetController");
 const verify = require("../middleware/authMiddleware");
 const validate = require("../middleware/validate");
-const { createSnipprtSchema } = require("../validations/snippetValidator");
+const { createSnippetSchema } = require("../validations/snippetValidator");
 const authorize = require("../middleware/authorize");
 
 const snippetRouter = Router();
@@ -16,9 +16,9 @@ snippetRouter.get("/my", verify, getMySnippets);
 snippetRouter.use(verify);
 snippetRouter.get("/:id",authorize(["user","moderator","admin"]), getSnippetById);
 
-snippetRouter.post('/', validate(createSnipprtSchema), createSnippet);
+snippetRouter.post('/', validate(createSnippetSchema), createSnippet);
 
-snippetRouter.put('/:id', validate(createSnipprtSchema), updateSnippet);
+snippetRouter.put('/:id', validate(createSnippetSchema), updateSnippet);
 
 snippetRouter.delete('/:id', deleteSnippet);
 

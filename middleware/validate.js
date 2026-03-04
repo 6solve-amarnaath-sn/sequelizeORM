@@ -7,7 +7,7 @@ module.exports = (schema) => {
     if (error) {
       return res.status(400).json({
         success: false,
-        message: "Validation failed",
+        msg: "Validation failed",
         errors: error.details.map(err => err.message)
       });
     }

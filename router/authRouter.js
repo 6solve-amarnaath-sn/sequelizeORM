@@ -9,6 +9,6 @@ authRouter.post("/login",login);
 
 authRouter.post("/forgotpassword",forgotPassword);
 
-authRouter.post("/resetpassword/:token",resetPassword)
+authRouter.post("/resetpassword/:token",resetPassword);
 
 module.exports=authRouter

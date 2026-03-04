@@ -5,6 +5,11 @@ const { Op } = require('sequelize');
 exports.createSnippet = async (req, res) => {
   const { title, description, code, language, visibility, tags } = req.body;
 
+  const user=await User.findByPk(req.user.id);
+  if(!user){
+    return res.status(401).json({msg:"user not find"});
+  }
+
   const snippet = await Snippet.create({
     title,
     description,
@@ -42,6 +47,7 @@ exports.getPublicSnippets = async (req, res) => {
   if (tag) {
     where.tags = { [Op.iLike]: `%${tag}%` };
   }
+  where.moderatorHidden=false
 
   const { count, rows } = await Snippet.findAndCountAll({
     where,
@@ -77,16 +83,21 @@ exports.getSnippetById = async (req, res) => {
   });
 
   if (!snippet)
-    return res.status(404).json({ message: "Snippet not found" });
+    return res.status(404).json({ msg: "Snippet not found" });
 
-  // If private → only owner or admin can see
+ 
   if (
     snippet.visibility === "private" &&
     snippet.author.id !== req.user.id &&
     req.user.role !== "admin"
   ) {
-    return res.status(403).json({ message: "Forbidden" });
+    return res.status(403).json({ msg: "Forbidden" });
   }
+
+  if(snippet.moderatorHidden && snippet.author.id !== req.user.id &&
+    (req.user.role !== "admin" || req.user.role !== "moderator" )){
+      return res.status(403).json({ msg: "Forbidden" });
+    }
 
   res.json(snippet);
 };
@@ -126,10 +137,10 @@ exports.updateSnippet = async (req, res) => {
   const snippet = await Snippet.findByPk(req.params.id);
 
   if (!snippet)
-    return res.status(404).json({ message: "Not found" });
+    return res.status(404).json({ msg: "Not found" });
 
   if (snippet.userId !== req.user.id && req.user.role!=="admin")
-    return res.status(403).json({ message: "Forbidden" });
+    return res.status(403).json({ msg: "Forbidden" });
 
   const { title, description, code, language, visibility, tags } = req.body;
 
@@ -151,18 +162,18 @@ exports.deleteSnippet = async (req, res) => {
   const snippet = await Snippet.findByPk(req.params.id);
 
   if (!snippet)
-    return res.status(404).json({ message: 'Not found' });
+    return res.status(404).json({ msg: 'Not found' });
 
   if (
     snippet.userId !== req.user.id &&
     !['admin', 'moderator'].includes(req.user.role)
   ) {
-    return res.status(403).json({ message: 'Forbidden' });
+    return res.status(403).json({ msg: 'Forbidden' });
   }
 
   await snippet.destroy();
 
-  res.json({ message: 'Deleted successfully' });
+  res.json({ msg: 'Deleted successfully' });
 };
 
 

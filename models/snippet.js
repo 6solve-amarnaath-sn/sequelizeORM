@@ -42,6 +42,11 @@ module.exports = (sequelize, DataTypes) => {
     tags: {
       type: DataTypes.STRING
     },
+    moderatorHidden: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -33,7 +33,7 @@ const deleteSnippet = async (req, res) => {
 };
 
 
-const hideSnippet = async (req, res) => {
+const togglesvisibility = async (req, res) => {
   const { id } = req.params;
 
   const snippet = await Snippet.findByPk(id);
@@ -41,14 +41,15 @@ const hideSnippet = async (req, res) => {
     return res.status(404).json({ msg: "Snippet not found" });
   }
 
-  snippet.visibility = "private";
+  snippet.moderatorHidden = snippet.moderatorHidden?false:true;
+
   await snippet.save();
 
-  res.json({ msg: "Snippet hidden (set to private)" });
+  res.json({ msg: "Snippet hidden" });
 };
 
 module.exports = {
   getAllPublicSnippets,
   deleteSnippet,
-  hideSnippet,
+  togglesvisibility,
 };
