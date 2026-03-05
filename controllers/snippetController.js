@@ -176,4 +176,28 @@ exports.deleteSnippet = async (req, res) => {
   res.json({ msg: 'Deleted successfully' });
 };
 
+exports.suggestion = async (req, res) => {
+  const search = req.query.q;
 
+  if (!search) {
+    return res.status(400).json({ msg: "search not found" });
+  }
+
+  const where = {
+    visibility: "public",
+    moderatorHidden: false,
+    [Op.or]: [
+      { title: { [Op.iLike]: `%${search}%` } }, 
+       { tags: { [Op.iLike]: `%${search}%` } },
+    ],
+  };
+
+  const snippets = await Snippet.findAll({
+    where,
+    attributes: ["id", "title"], 
+    limit: 5,                    
+    order: [["createdAt", "DESC"]],
+  });
+
+  res.json(snippets); 
+};
